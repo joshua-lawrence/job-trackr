@@ -18,7 +18,7 @@ const ApplicationManager = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-        const response = await axios.get(`http://localhost:9090/getallapplications`)
+        const response = await axios.get(`http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/getallapplications`)
             setApplications(response.data);
         }
         fetchData();
@@ -37,7 +37,7 @@ const ApplicationManager = () => {
         else {
             setError("");
             const sendData = async () => {
-                await axios.post('http://localhost:9090/addapplication', {
+                await axios.post('http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/addapplication', {
                     appdate: moment(date).format('YYYY-MM-DD'),
                     title: title,
                     url: url,
@@ -68,7 +68,7 @@ const ApplicationManager = () => {
         var newIds = selectedIds;
         var newApplications = applications;
         id.map((item) => {
-            axios.delete(`http://localhost:9090/deleteapplication/${item}`)
+            axios.delete(`http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/deleteapplication/${item}`)
             .then(res => {
                 console.log(res);
             })

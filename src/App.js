@@ -10,13 +10,6 @@ function App() {
     <Container fluid style={{background: "#f8f8f8", paddingRight: '0', paddingLeft: '0'}}> 
       <Navbar bg="dark" variant="dark">
       <Navbar.Brand href="#home">
-        <img
-          alt=""
-          src="/logo.svg"
-          width="30"
-          height="30"
-          className="d-inline-block align-top"
-        />{' '}
         Job Trackr
       </Navbar.Brand>
     </Navbar>
