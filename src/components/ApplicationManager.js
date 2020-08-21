@@ -15,6 +15,8 @@ const ApplicationManager = () => {
     const [error, setError] = useState("");
     const [applications, setApplications] = useState([]);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [editId, setEditId] = useState();
+    const [editStatus, setEditStatus] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,6 +57,31 @@ const ApplicationManager = () => {
         }
     }
 
+    const editApplication = (e) => {
+        setEditId(e);
+    }
+
+    const saveStatusEdit = (e, application) => {
+        if(application.status == e) {
+            setEditId();
+        }
+        setEditStatus(e);
+        axios.put(`http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/updateapplication`, {
+            id: application.id,
+            appdate: moment(application.date).format('YYYY-MM-DD'),
+            title: application.title,
+            url: application.url,
+            status: e
+        })
+        .then(res => {
+            var newApplications = applications;
+            newApplications = newApplications.filter(newApplications => newApplications.id != application.id);
+            setEditId();
+            setApplications(newApplications.concat(res.data));
+            console.log(res);
+        })
+    }
+
     const addChecked = (id) => {
         if (!selectedIds.includes(id)) {
             setSelectedIds(selectedIds.concat(id));
@@ -79,9 +106,37 @@ const ApplicationManager = () => {
         setApplications(newApplications);
     }
 
+    const renderStatusDropdown = (application) => {
+        return (
+            <Form.Control id={application.id} as="select" value={application.status} onBlur={(event) => saveStatusEdit(event.target.value, application)}> 
+                <option>
+                    Applied
+                </option>
+                <option>
+                    Interviewing
+                </option>
+                <option>
+                    Offer
+                </option>
+                <option>
+                    Rejected
+                </option>
+                <option>
+                    No Response
+                </option>
+                <option>
+                    Offer Accepted
+                </option>
+                <option>
+                    Offer Rejected
+                </option>
+            </Form.Control>
+        )
+    }
+
     const renderTable = () => {
         return (
-                applications.map(
+                applications.sort((a,b) => new Date(b.appdate) - new Date(a.appdate)).map(
                     application => 
                     <tr key={application.id}>
                         <td>
@@ -100,21 +155,26 @@ const ApplicationManager = () => {
                         </td>
                         <td>
                             {(() => {
-                                switch(application.status) {
-                                    case 'Applied':
-                                        return <Alert variant="primary">{application.status}</Alert>;
-                                    case 'Interviewing':
-                                        return <Alert variant="secondary">{application.status}</Alert>;
-                                    case 'Offer':
-                                        return <Alert variant="success">{application.status}</Alert>;
-                                    case 'Rejected':
-                                        return <Alert variant="danger">{application.status}</Alert>;
-                                    case 'No Response':
-                                        return <Alert variant="light">{application.status}</Alert>;
-                                    case 'Offer Accepted':
-                                        return <Alert variant="info">{application.status}</Alert>;
-                                    case 'Offer Rejected':
-                                        return <Alert variant="light">{application.status}</Alert>;
+                                if (editId == application.id) {
+                                   return renderStatusDropdown(application);
+                                }
+                                else {
+                                    switch(application.status) {
+                                        case 'Applied':
+                                            return <Alert variant="primary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                        case 'Interviewing':
+                                            return <Alert variant="secondary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                        case 'Offer':
+                                            return <Alert variant="success" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                        case 'Rejected':
+                                            return <Alert variant="danger" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                        case 'No Response':
+                                            return <Alert variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                        case 'Offer Accepted':
+                                            return <Alert variant="info" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                        case 'Offer Rejected':
+                                            return <Alert variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                    }
                                 }
                             })()}
                         </td>
@@ -131,13 +191,13 @@ const ApplicationManager = () => {
     var interviewing = applications.filter((applications => applications.status == "Interviewing")).length;
     var noresponse = applications.filter((applications => applications.status == "No Response")).length + applications.filter((applications => applications.status == "Applied")).length;
 
-    console.log(applied + ' ' + offer + ' ' + rejected + ' ' + offeraccepted);
+    
 
     return (
         <>
         <Chart
             width={"100%"}
-            height={300}
+            height={350}
             style={{marginTop: "50px"}}
             chartType="Sankey"
             loader={<Spinner animation="border"/>}
@@ -166,7 +226,7 @@ const ApplicationManager = () => {
                     <Form.Control type="text" name="url" placeholder="Url" onChange={(event) => setUrl(event.target.value)} />
                 </Col>
                 <Col>
-                    <Form.Control as="select" name="status" onChange={(event) => setStatus(event.target.value)}> 
+                    <Form.Control as="select" name="status" onChange={(event) => setStatus(event.target.value)} > 
                         <option>
                             Applied
                         </option>
