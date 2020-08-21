@@ -1,10 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
 import { Container, Row, Col, Navbar } from 'react-bootstrap';
-import DataTable from './components/DataTable';
+import ApplicationManager from './components/ApplicationManager';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AddApplication from './components/AddApplication';
 
 function App() {
   return (
@@ -24,8 +23,7 @@ function App() {
       <Container>
         <Row>
             <Col>
-              <AddApplication />
-              <DataTable />
+              <ApplicationManager />
             </Col>
           </Row>
       </Container>
