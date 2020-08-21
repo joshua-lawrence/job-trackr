@@ -1,25 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
+import { Container, Row, Col } from 'react-bootstrap';
+import DataTable from './components/DataTable';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid style={{background: "#f8f8f8"}}> 
+      <Row>
+        <Col>
+        </Col>
+        <Col style={{background: "white"}}>
+          <DataTable />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
