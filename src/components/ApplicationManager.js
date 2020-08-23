@@ -20,7 +20,7 @@ const ApplicationManager = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-        const response = await axios.get(`http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/getallapplications`)
+        const response = await axios.get(`https://warm-journey-64744.herokuapp.com/getallapplications`)
             setApplications(response.data);
         }
         fetchData();
@@ -39,7 +39,7 @@ const ApplicationManager = () => {
         else {
             setError("");
             const sendData = async () => {
-                await axios.post('http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/addapplication', {
+                await axios.post('https://warm-journey-64744.herokuapp.com/addapplication', {
                     appdate: moment(date).format('YYYY-MM-DD'),
                     title: title,
                     url: url,
@@ -66,7 +66,7 @@ const ApplicationManager = () => {
             setEditId();
         }
         setEditStatus(e);
-        axios.put(`http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/updateapplication`, {
+        axios.put(`https://warm-journey-64744.herokuapp.com/updateapplication`, {
             id: application.id,
             appdate: moment(application.date).format('YYYY-MM-DD'),
             title: application.title,
@@ -95,7 +95,7 @@ const ApplicationManager = () => {
         var newIds = selectedIds;
         var newApplications = applications;
         id.map((item) => {
-            axios.delete(`http://jobtrackrapi-env.eba-zhavqkvk.us-east-1.elasticbeanstalk.com/deleteapplication/${item}`)
+            axios.delete(`https://warm-journey-64744.herokuapp.com/${item}`)
             .then(res => {
                 console.log(res);
             })
