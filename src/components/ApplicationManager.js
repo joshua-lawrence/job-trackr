@@ -110,7 +110,7 @@ const ApplicationManager = () => {
 
     const renderStatusDropdown = (application) => {
         return (
-            <Form.Control id={application.id} as="select" value={application.status} onBlur={(event) => saveStatusEdit(event.target.value, application)}> 
+            <Form.Control id={application.id} as="select" value={application.status} onChange={(event) => saveStatusEdit(event.target.value, application)}> 
                 <option>
                     Applied
                 </option>
@@ -214,7 +214,7 @@ const ApplicationManager = () => {
 
             ]}
         />
-        {loading ? <Spinner animation="border"/> : ""}
+        {loading ? <span>Heroku takes forever to spin up... <Spinner animation="border"/></span> : ""}
         <Form onSubmit = { handleSubmit } style={{backgroundColor: "white", padding: "50px", marginBottom: "100px", marginTop: "100px"}}>
             <h5 style={{paddingBottom: "20px"}}>Add a New Job Application</h5>
             {error != "" ? <Alert variant="danger">{error}</Alert> : ""}
@@ -258,35 +258,37 @@ const ApplicationManager = () => {
                 </Col>
             </Form.Row>
         </Form>
-        <div style={{background: "white", padding: "50px", marginBottom: "100px"}}>
-            <h5 style={{paddingBottom: "20px"}}>Job Applications</h5>
-            <div style={{float: "right", paddingBottom: "10px"}}>
-                <Button variant="danger" disabled={selectedIds == "" ? "disabled" : ""} onClick={() => deleteLines(selectedIds)}>Delete</Button>
-            </div>
-            <Table hover style={{border: "1px solid #ddd"}}>
-                <thead>
-                    <tr>
-                        <th>
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                            Title
-                        </th>
-                        <th>
-                            Url
-                        </th>
-                        <th style={{textAlign: "center"}}>
-                            Status
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {renderTable()}
-                </tbody>
-            </Table>
-        </div>
+        <Row style={{background: "white", padding: "50px", marginBottom: "100px"}}>
+            <Col>
+                <h5 style={{paddingBottom: "20px"}}>Job Applications</h5>
+                <div style={{float: "right", paddingBottom: "10px"}}>
+                    <Button variant="danger" disabled={selectedIds == "" ? "disabled" : ""} onClick={() => deleteLines(selectedIds)}>Delete</Button>
+                </div>
+                <Table hover style={{border: "1px solid #ddd"}}>
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Url
+                            </th>
+                            <th style={{textAlign: "center"}}>
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {renderTable()}
+                    </tbody>
+                </Table>
+            </Col>
+        </Row>
         </>
     );
 }
