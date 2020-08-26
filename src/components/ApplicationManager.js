@@ -163,19 +163,19 @@ const ApplicationManager = () => {
                                 else {
                                     switch(application.status) {
                                         case 'Applied':
-                                            return <Alert variant="primary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="primary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                         case 'Interviewing':
-                                            return <Alert variant="secondary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="secondary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                         case 'Offer':
-                                            return <Alert variant="success" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="success" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                         case 'Rejected':
-                                            return <Alert variant="danger" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="danger" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                         case 'No Response':
-                                            return <Alert variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                         case 'Offer Accepted':
-                                            return <Alert variant="info" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="info" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                         case 'Offer Rejected':
-                                            return <Alert variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
                                     }
                                 }
                             })()}
