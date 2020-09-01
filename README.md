@@ -14,5 +14,5 @@ Job Trackr is an application for tracking your job search. Add the job title, ur
 - Job Descriptions
 - Contact Information
 - Document Attachment (cover letters, etc.)
-- Sorting, Filtering
+- ~~Sorting,~~ Filtering
 - API Authentication
