@@ -18,6 +18,8 @@ const ApplicationManager = () => {
     const [selectedIds, setSelectedIds] = useState([]);
     const [editId, setEditId] = useState();
     const [editStatus, setEditStatus] = useState();
+    const [currentStatus, setCurrentStatus] = useState();
+    const [sortOrder, setSortOrder] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,7 +61,8 @@ const ApplicationManager = () => {
         }
     }
 
-    const editApplication = (e) => {
+    const editApplication = (e, cs) => {
+        setCurrentStatus(cs);
         setEditId(e);
     }
 
@@ -67,6 +70,7 @@ const ApplicationManager = () => {
         if(application.status == e) {
             setEditId();
         }
+        setCurrentStatus(e);
         setEditStatus(e);
         axios.put(`https://warm-journey-64744.herokuapp.com/updateapplication`, {
             id: application.id,
@@ -80,7 +84,6 @@ const ApplicationManager = () => {
             newApplications = newApplications.filter(newApplications => newApplications.id != application.id);
             setEditId();
             setApplications(newApplications.concat(res.data));
-            console.log(res);
         })
     }
 
@@ -107,10 +110,14 @@ const ApplicationManager = () => {
         setSelectedIds(newIds);
         setApplications(newApplications);
     }
+    
+    const toggleSortOrder = () => {
+        setSortOrder(!sortOrder);
+    }
 
     const renderStatusDropdown = (application) => {
         return (
-            <Form.Control id={application.id} as="select" value={application.status} onChange={(event) => saveStatusEdit(event.target.value, application)}> 
+            <Form.Control id={application.id} as="select" value={currentStatus} onChange={(event) => saveStatusEdit(event.target.value, application)}> 
                 <option>
                     Applied
                 </option>
@@ -136,9 +143,9 @@ const ApplicationManager = () => {
         )
     }
 
-    const renderTable = () => {
+    const renderTable = (sO) => {
         return (
-                applications.sort((a,b) => new Date(b.appdate) - new Date(a.appdate)).map(
+                applications.sort((a,b) => (sO == false ? new Date(b.appdate) - new Date(a.appdate) : new Date(a.appdate) - new Date(b.appdate))).map(
                     application => 
                     <tr key={application.id}>
                         <td>
@@ -158,24 +165,24 @@ const ApplicationManager = () => {
                         <td>
                             {(() => {
                                 if (editId == application.id) {
-                                   return renderStatusDropdown(application);
+                                    return renderStatusDropdown(application);
                                 }
                                 else {
                                     switch(application.status) {
                                         case 'Applied':
-                                            return <Alert className="appStatus" variant="primary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="primary" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                         case 'Interviewing':
-                                            return <Alert className="appStatus" variant="secondary" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="secondary" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                         case 'Offer':
-                                            return <Alert className="appStatus" variant="success" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="success" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                         case 'Rejected':
-                                            return <Alert className="appStatus" variant="danger" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="danger" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                         case 'No Response':
-                                            return <Alert className="appStatus" variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="light" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                         case 'Offer Accepted':
-                                            return <Alert className="appStatus" variant="info" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="info" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                         case 'Offer Rejected':
-                                            return <Alert className="appStatus" variant="light" onClick={() => editApplication(application.id)}>{application.status}</Alert>;
+                                            return <Alert className="appStatus" variant="light" onClick={() => editApplication(application.id, application.status)}>{application.status}</Alert>;
                                     }
                                 }
                             })()}
@@ -270,7 +277,7 @@ const ApplicationManager = () => {
                             <th>
                             </th>
                             <th>
-                                Date
+                                <a className="appStatus" onClick={() => toggleSortOrder()}>Date {(!sortOrder ? "▼" : "▲")}</a>
                             </th>
                             <th>
                                 Title
@@ -284,7 +291,7 @@ const ApplicationManager = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {renderTable()}
+                        {renderTable(sortOrder)}
                     </tbody>
                 </Table>
             </Col>
