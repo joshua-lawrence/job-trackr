@@ -117,7 +117,7 @@ const ApplicationManager = () => {
 
     const renderStatusDropdown = (application) => {
         return (
-            <Form.Control id={application.id} as="select" value={currentStatus} onBlur={(event) => saveStatusEdit(event.target.value, application)}> 
+            <Form.Control id={application.id} as="select" value={currentStatus} onChange={(event) => saveStatusEdit(event.target.value, application)}> 
                 <option>
                     Applied
                 </option>
@@ -145,7 +145,7 @@ const ApplicationManager = () => {
 
     const renderTable = (sO) => {
         return (
-                applications.sort((a,b) => (sO == false ? new Date(b.appdate) - new Date(a.appdate) || ('' + b.title).localeCompare(b.title) : new Date(a.appdate) - new Date(b.appdate))).map(
+                applications.sort((a,b) => (sO == false ? new Date(b.appdate) - new Date(a.appdate) : new Date(a.appdate) - new Date(b.appdate))).map(
                     application => 
                     <tr key={application.id}>
                         <td>
