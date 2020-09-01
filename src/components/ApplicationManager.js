@@ -117,7 +117,7 @@ const ApplicationManager = () => {
 
     const renderStatusDropdown = (application) => {
         return (
-            <Form.Control id={application.id} as="select" value={currentStatus} onChange={(event) => saveStatusEdit(event.target.value, application)}> 
+            <Form.Control id={application.id} as="select" value={currentStatus} onBlur={(event) => saveStatusEdit(event.target.value, application)}> 
                 <option>
                     Applied
                 </option>
